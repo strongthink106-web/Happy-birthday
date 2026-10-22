@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120914">
+<meta name="description" content="A little midnight birthday surprise, made with love for Riju.">
+<title>For Riju ✦ A Birthday Love Film</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#fff7f7;--muted:#d9c2d1;--rose:#ff9dbb;--peach:#ffd0b9;--gold:#ffdfad;--serif:'Playfair Display',Georgia,serif;--sans:'Hind Siliguri',system-ui,sans-serif;--mono:'DM Mono',monospace;--safe-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#120914;color:var(--ink);font-family:var(--sans)}body{height:100dvh;overflow:hidden}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #ffe6ae;outline-offset:4px}button:disabled{opacity:.3;cursor:not-allowed}
+#backdrop{position:fixed;inset:0;z-index:0;overflow:hidden;background:radial-gradient(ellipse at 18% 15%,#a7285b55,transparent 33%),radial-gradient(ellipse at 82% 80%,#513b9d55,transparent 39%),linear-gradient(135deg,#100813,#251027 48%,#10101e);isolation:isolate}
+#backdrop:before,#backdrop:after{content:"";position:absolute;inset:-30%;background:radial-gradient(ellipse at 28% 40%,#ff7fac24,transparent 28%),radial-gradient(ellipse at 72% 54%,#c7a0ff22,transparent 29%);filter:blur(16px);animation:aurora 24s ease-in-out infinite alternate;z-index:-1}#backdrop:after{animation-duration:32s;animation-direction:alternate-reverse;transform:rotate(17deg);opacity:.75}
+#bgVideo{position:absolute;width:100%;height:100%;inset:0;object-fit:cover;opacity:0;transition:opacity 1s;pointer-events:none}#bgVideo.ready{opacity:.42}#videoShade{position:absolute;inset:0;background:linear-gradient(120deg,#130914d9,#1b0f22a8 58%,#090912cc);pointer-events:none}
+#particleCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.8}
+.grain{position:fixed;inset:0;z-index:15;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+/* Waiting screen: intentionally no navigation or reveal button. */
+#countdownGate{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:25px;text-align:center;transition:opacity .9s,visibility .9s}#countdownGate.gone{opacity:0;visibility:hidden;pointer-events:none}.gate-content{width:min(720px,100%);animation:fade-up 1.2s both}.gate-eyebrow,.eyebrow,.kicker{font:10px var(--mono);letter-spacing:.19em;text-transform:uppercase;color:#ffcfdf}.gate-spark{width:66px;height:66px;margin:0 auto 28px;border:1px solid #ffd2e75e;border-radius:50%;display:grid;place-items:center;font-size:27px;color:#ffe1c4;box-shadow:0 0 45px #ff7eaf30,inset 0 0 32px #ff7eaf16;animation:glow 3.2s ease-in-out infinite}.gate-content h1{font-size:clamp(42px,9vw,90px);line-height:.98;letter-spacing:-.06em;margin:21px 0 16px;font-weight:500}.gate-content h1 em{font-family:var(--serif);font-weight:500;color:transparent;background:linear-gradient(115deg,#ffe1ad,#ff9fc4 57%,#d7b6ff);background-clip:text;-webkit-background-clip:text}.gate-copy{max-width:490px;margin:0 auto;color:#dac5d4;line-height:1.9;font-size:clamp(14px,2.8vw,17px)}.clock{display:flex;justify-content:center;gap:clamp(9px,3vw,20px);margin:34px 0 18px}.time-cell{width:clamp(74px,17vw,116px);padding:14px 7px 12px;border:1px solid #f6bfd72a;background:linear-gradient(160deg,#fff1ff0b,#ffabc90b);backdrop-filter:blur(14px);border-radius:18px;box-shadow:inset 0 1px #fff1,0 15px 45px #0002}.time-cell strong{display:block;font:clamp(30px,7vw,50px)/1.15 var(--serif);font-weight:500;color:#fff2f7;font-variant-numeric:tabular-nums}.time-cell span{display:block;margin-top:7px;font:9px var(--mono);letter-spacing:.15em;color:#d8bacd}.gate-foot{font:10px var(--mono);letter-spacing:.14em;color:#d3afc5;margin-top:28px}.tiny-heart{color:#ff9cbd;display:inline-block;animation:beat 1.5s ease-in-out infinite}
+#app{position:relative;z-index:2;height:100dvh;opacity:0;visibility:hidden;transition:opacity .85s ease;isolation:isolate}#app.unlocked{opacity:1;visibility:visible}
+.topbar{position:absolute;z-index:8;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:clamp(15px,3vw,25px) clamp(18px,5vw,64px);border-bottom:1px solid #f9d9e717;background:linear-gradient(180deg,#110811a8,transparent);gap:15px}.brand{display:flex;align-items:center;gap:11px;font:10px var(--mono);letter-spacing:.15em;text-transform:uppercase;color:#f4d8e5}.brand-mark{width:28px;height:28px;display:grid;place-items:center;border:1px solid #f0b7d37a;border-radius:50%;color:#ffc7da;font-size:15px}.top-right{font:9px var(--mono);letter-spacing:.13em;color:#cbb2c7;white-space:nowrap}
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:100px clamp(20px,7vw,105px) 106px;opacity:0;visibility:hidden;transform:translateY(14px) scale(.99);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1),visibility .65s;pointer-events:none}.scene.active{opacity:1;visibility:visible;transform:none;pointer-events:auto}.scene.leaving{opacity:0;transform:translateY(-10px) scale(1.01)}.scene:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.65;background:radial-gradient(ellipse at 80% 27%,#fa8fb51a,transparent 40%)}.inner{width:min(1120px,100%);position:relative;z-index:1}.kicker{display:flex;align-items:center;gap:10px;color:#f9c6d9}.kicker:before{content:"";width:29px;height:1px;background:#ffd7a6}.eyebrow{color:#f7d1ac;font-size:9px}h1,h2,h3,p{margin-top:0}h1,h2{font-weight:500}h1{font-size:clamp(56px,10vw,138px);line-height:.9;letter-spacing:-.075em;margin:24px 0;color:#fff5f7}h2{font-size:clamp(42px,7.5vw,94px);line-height:.99;letter-spacing:-.06em;margin:18px 0 23px;color:#fff4f7}h1 em,h2 em,.quote em{font-family:var(--serif);font-weight:500;font-style:italic;color:transparent;background:linear-gradient(115deg,#ffe2ad,#ff9fc4 55%,#d6b7ff);-webkit-background-clip:text;background-clip:text}.copy{max-width:580px;color:#e0cbd9;font-size:clamp(15px,1.7vw,19px);line-height:1.95}.actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:28px}.primary{border:1px solid #ffe1de;background:linear-gradient(115deg,#ffe0b1,#ffabc8 55%,#d8bdff);color:#2a1222;padding:14px 19px;display:inline-flex;align-items:center;justify-content:space-between;gap:24px;min-width:195px;border-radius:999px;font-weight:600;box-shadow:0 12px 40px #ed9fbe1c;transition:transform .25s,filter .25s}.primary:hover{transform:translateY(-3px);filter:brightness(1.06)}.subtle{border:0;border-bottom:1px solid #f6c5d65a;padding:9px 2px;background:transparent;color:#f0dce8}.small-note{font:9px var(--mono);letter-spacing:.13em;color:#c8aabe}
+/* Scene 1 — cinematic birthday cover */
+.s1{background:radial-gradient(ellipse at 78% 48%,#9c3e7550,transparent 42%),linear-gradient(120deg,#14091720,#17102128)}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:4vw}.hero-copy{position:relative;z-index:3}.hero-copy .copy{max-width:490px}.hero-art{height:min(65vh,610px);min-height:350px;position:relative;perspective:900px}.halo{position:absolute;right:9%;top:5%;width:min(34vw,370px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 28%,#ffe6ba,#ee9dc2 47%,#775998 76%,#261830);box-shadow:0 0 100px #f18cbf35,0 0 0 24px #ffc5dd0b,0 0 0 48px #ffc5dd08;animation:float 7s ease-in-out infinite}.orbit{position:absolute;width:90%;height:74%;right:0;top:10%;border:1px solid #ffd6e53d;border-radius:50%;transform:rotate(-24deg)}.orbit:after{content:"✦";position:absolute;left:13%;top:18%;font-size:19px;color:#ffe2b7;text-shadow:0 0 20px #fff0ad}.birthday-card{position:absolute;right:10%;top:14%;width:min(80%,365px);height:70%;padding:12px;background:linear-gradient(145deg,#ffe7d2,#e4accb 53%,#b4a0dd);transform:rotate(4deg);box-shadow:0 35px 90px #05020b8c;animation:card-float 8s ease-in-out infinite}.birthday-card-inner{height:100%;border:1px solid #5c34557d;padding:clamp(15px,3vw,28px);display:flex;flex-direction:column;justify-content:space-between;color:#42233a}.card-top{font:9px var(--mono);letter-spacing:.16em}.card-script{font:italic clamp(28px,4.2vw,49px)/1.06 var(--serif);transform:rotate(-4deg)}.card-script span{display:block;color:#a33d70}.card-bottom{display:flex;justify-content:space-between;align-items:center;font:9px var(--mono);letter-spacing:.12em}.mini-polaroid{position:absolute;left:0;bottom:6%;width:43%;padding:9px 9px 26px;background:#fff4e9;box-shadow:0 18px 50px #0008;transform:rotate(-8deg)}.mini-polaroid .scene-pic{height:clamp(105px,17vw,170px);background:radial-gradient(circle at 70% 22%,#ffe3a4 0 9%,transparent 10%),linear-gradient(145deg,#855276,#f0a5b9 55%,#f5d9b5);position:relative;overflow:hidden}.scene-pic:before{content:"";position:absolute;bottom:-30px;left:-5%;width:110%;height:70%;background:linear-gradient(90deg,#35243f,#6d385c,#332342);border-radius:50% 50% 0 0}.scene-pic:after{content:"♡";position:absolute;inset:0;display:grid;place-items:center;color:#ffe3eb;font-size:54px;text-shadow:0 5px 22px #4f214b}.polaroid-cap{text-align:center;margin-top:9px;color:#57374c;font:italic 13px var(--serif)}.seal{position:absolute;right:0;bottom:12%;width:80px;aspect-ratio:1;border-radius:50%;background:linear-gradient(145deg,#ffe0ac,#f3a4c7 55%,#c7b5f1);color:#32152b;display:grid;place-items:center;text-align:center;font:9px/1.4 var(--mono);transform:rotate(10deg);box-shadow:0 9px 30px #0003}
+/* Scene 2 — wish */
+.s2{background:radial-gradient(ellipse at 78% 53%,#e15b8733,transparent 39%),linear-gradient(120deg,#28102533,#180c20)}.wish-layout{display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:7vw}.wish-emblem{width:min(34vw,330px);aspect-ratio:1;margin:auto;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#ffe4c0,#ed98bf 42%,#5d3b78 78%);box-shadow:0 0 90px #f78fbe30,0 0 0 18px #ffccdf0a,0 0 0 38px #ffccdf08;animation:float 8s ease-in-out infinite}.wish-emblem:before,.wish-emblem:after{content:"";position:absolute;inset:-13%;border:1px solid #ffe3ec4a;border-radius:50%;transform:rotate(25deg)}.wish-emblem:after{inset:-24%;transform:rotate(-31deg);border-color:#ffe3ec25}.wish-emblem span{font:clamp(65px,12vw,125px) var(--serif);color:#fff0e0;text-shadow:0 5px 30px #7a2b5966}
+/* Scene 3 — smile */
+.s3{background:radial-gradient(ellipse at 18% 75%,#e2a35b24,transparent 38%),linear-gradient(130deg,#21111e,#281b26 56%,#171024)}.big-quote{font:clamp(28px,5.6vw,67px)/1.32 var(--serif);max-width:930px;color:#ffedf3;letter-spacing:-.025em}.big-quote em{color:#ffb6ce}
+/* Scene 4 — interactive little moments */
+.s4{background:radial-gradient(ellipse at 75% 25%,#6d53b32b,transparent 40%),linear-gradient(135deg,#100d20,#1d1731)}.memory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}.memory-card{min-height:190px;text-align:left;padding:20px;border:1px solid #efc5f12c;border-radius:18px;color:#f9e8f1;background:linear-gradient(145deg,#ffffff0c,#efb4e30a);backdrop-filter:blur(10px);transition:transform .3s,border-color .3s,background .3s}.memory-card:hover{transform:translateY(-5px);border-color:#f3b9d77d;background:#ffb8db12}.memory-card .number{font:9px var(--mono);letter-spacing:.14em;color:#e6aacd}.memory-card .icon{font-size:24px;display:block;margin:22px 0 10px;color:#ffb8d6}.memory-card strong{display:block;font-size:19px;margin-bottom:7px}.memory-card .revealed{display:none;color:#dec3d9;font-size:14px;line-height:1.8}.memory-card.open .revealed{display:block;animation:fade-up .35s both}.memory-card.open .tease{display:none}
+/* Scene 5 — handwritten letter */
+.s5{background:radial-gradient(ellipse at 70% 30%,#e8a07b2a,transparent 40%),linear-gradient(125deg,#241324,#3a1b2d)}.letter-layout{display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:6vw}.envelope-wrap{width:min(34vw,320px);min-width:195px;margin:auto;perspective:1000px}.envelope{position:relative;width:100%;aspect-ratio:1.25;background:linear-gradient(145deg,#ffe2c6,#edaac7);box-shadow:0 26px 70px #06020980;cursor:pointer;border:0;transition:transform .35s}.envelope:before{content:"";position:absolute;inset:0;background:linear-gradient(145deg,transparent 49%,#d88eb1 50%),linear-gradient(215deg,transparent 49%,#e9a4bf 50%);opacity:.92}.envelope-flap{position:absolute;top:0;left:0;width:100%;height:55%;transform-origin:top;transition:transform .7s;clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(145deg,#ffe9d0,#ffd3de);z-index:2}.envelope-seal{position:absolute;z-index:3;left:50%;top:43%;transform:translate(-50%,-50%);height:45px;width:45px;display:grid;place-items:center;border-radius:50%;background:#a63f70;color:#ffe5cf;font-size:20px;transition:opacity .3s}.envelope.open .envelope-flap{transform:rotateX(180deg)}.envelope.open .envelope-seal{opacity:0}.letter-paper{position:absolute;left:8%;right:8%;top:7%;height:84%;background:#fff5e9;color:#603450;padding:14px;display:flex;flex-direction:column;justify-content:center;text-align:center;transform:translateY(7%);transition:transform .7s .1s;box-shadow:0 6px 17px #31152b25}.envelope.open .letter-paper{transform:translateY(-20%)}.letter-paper span{font:italic clamp(17px,3vw,25px)/1.25 var(--serif)}.letter-paper small{font:8px var(--mono);margin-top:14px;letter-spacing:.1em}.letter-text{display:none;margin-top:18px;border-left:1px solid #ffbdd8;padding-left:18px;color:#f2dce8;line-height:1.9}.letter-text.show{display:block;animation:fade-up .5s both}
+/* Scene 6 — constellation */
+.s6{background:radial-gradient(ellipse at 82% 60%,#5147a13a,transparent 47%),linear-gradient(130deg,#0f1024,#191932 54%,#261329)}.starfield-art{position:absolute;right:5%;top:8%;height:76%;width:min(41vw,430px);opacity:.8;pointer-events:none}.starfield-art svg{width:100%;height:100%;overflow:visible}.constellation-line{stroke:#f4cee8;stroke-width:1;stroke-opacity:.5;fill:none;stroke-dasharray:3 7;animation:dash 22s linear infinite}.constellation-star{fill:#ffeac0;filter:drop-shadow(0 0 7px #ffda9a);animation:twinkle 2s ease-in-out infinite alternate}
+/* Scene 7 — cake */
+.s7{background:radial-gradient(ellipse at 78% 52%,#ee9c6731,transparent 42%),linear-gradient(135deg,#271321,#311a2b)}.cake-layout{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:5vw}.cake-stage{height:350px;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:35px}.cake-plate{position:absolute;bottom:26px;width:88%;height:24px;border-radius:50%;background:linear-gradient(#e5bfd9,#865078);box-shadow:0 15px 30px #0006}.cake{position:relative;z-index:1;width:min(74%,300px);height:165px;border-radius:18px 18px 13px 13px;background:linear-gradient(90deg,#a64d7b,#f2a9c1 45%,#be648e);box-shadow:inset 0 -18px #6a2c59,0 18px 35px #08020b66}.cake:before{content:"";position:absolute;top:-15px;left:-2%;width:104%;height:35px;border-radius:50%;background:#ffe0e9;box-shadow:0 7px #d579a4}.cake:after{content:"♡  R  ♡";position:absolute;left:0;right:0;top:45%;text-align:center;color:#ffe5eb;font:italic 25px var(--serif)}.candle-row{position:absolute;left:0;right:0;top:-38px;display:flex;justify-content:center;gap:25px}.candle{height:54px;width:12px;background:repeating-linear-gradient(135deg,#fff1c9 0 6px,#ef82a9 6px 12px);border-radius:3px;position:relative}.flame{position:absolute;left:50%;top:-23px;width:13px;height:21px;transform:translateX(-50%);border-radius:55% 55% 50% 50%;background:radial-gradient(ellipse at 50% 72%,#fff7bc 0 25%,#ffb349 30% 58%,#ff658d 70%);filter:drop-shadow(0 0 12px #ffba59);animation:flame 1s ease-in-out infinite alternate}.candles-out .flame{opacity:0;transform:translate(-50%,7px) scale(.2);transition:all .5s}.cake-message{display:none;color:#ffd1e2;font-size:18px;line-height:1.8;margin-top:18px}.cake-message.show{display:block;animation:fade-up .5s both}
+/* Scene 8 — promises */
+.s8{background:radial-gradient(ellipse at 20% 30%,#aa4d7533,transparent 40%),linear-gradient(135deg,#17101c,#2d1b2b)}.promise-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:27px}.promise{border:1px solid #f7c8dd2d;border-radius:16px;padding:21px 18px;background:#ffffff08;min-height:150px}.promise span{font-size:24px;color:#ffb5d1}.promise b{display:block;margin:12px 0 8px;font-size:17px}.promise p{margin:0;color:#d9c2d1;font-size:14px;line-height:1.8}
+/* Scene 9 — heart */
+.s9{background:radial-gradient(ellipse at 50% 50%,#b7256540,transparent 42%),linear-gradient(135deg,#1b0d1b,#311322)}.heart-wrap{display:grid;grid-template-columns:1fr .7fr;gap:5vw;align-items:center}.tap-heart{border:0;background:none;color:#ff99bf;font-size:clamp(110px,23vw,230px);line-height:1;filter:drop-shadow(0 0 33px #fc579c53);animation:heart-pulse 1.8s ease-in-out infinite;transition:transform .3s}.tap-heart:active{transform:scale(1.3)}.heart-side{padding:26px;border:1px solid #ffbdd52a;border-radius:24px;background:#fff1f709;backdrop-filter:blur(10px)}.heart-count{font:44px var(--serif);color:#ffe0ba}.heart-message{min-height:55px;color:#e8cddc;line-height:1.8}
+/* Scene 10 — final */
+.s10{background:radial-gradient(ellipse at 50% 20%,#e791b12a,transparent 45%),linear-gradient(135deg,#180c19,#271327 55%,#11101d)}.final-content{text-align:center;max-width:900px;margin:auto}.final-content .copy{margin-left:auto;margin-right:auto}.final-content h2{font-size:clamp(45px,8vw,105px)}.final-heart{font-size:38px;color:#ffb1ca;display:block;margin:12px 0 22px;animation:beat 1.5s ease-in-out infinite}.final-sign{font:italic clamp(20px,3vw,28px) var(--serif);color:#f9c9d9;margin-top:20px}.final-star{position:absolute;font-size:28px;color:#ffdaa8;animation:twinkle 2s ease-in-out infinite alternate}.fs1{top:25%;left:12%}.fs2{top:19%;right:17%;animation-delay:.5s}.fs3{bottom:23%;left:20%;animation-delay:1s}.fs4{bottom:19%;right:11%;animation-delay:1.5s}
+/* Navigation */
+.bottom-bar{position:absolute;z-index:10;left:0;right:0;bottom:0;padding:14px clamp(18px,5vw,64px) max(14px,var(--safe-bottom));display:flex;align-items:center;justify-content:space-between;gap:15px;background:linear-gradient(0deg,#110811ed,#110811a8 65%,transparent)}.progress-area{display:flex;align-items:center;gap:13px;min-width:0}.page-count{font:10px var(--mono);letter-spacing:.13em;color:#d4b3c8;white-space:nowrap}.progress-dots{display:flex;gap:5px}.progress-dot{height:3px;width:clamp(7px,1.8vw,21px);border:0;padding:0;background:#f8dbe32e;transition:width .3s,background .3s;border-radius:6px}.progress-dot.active{width:clamp(18px,3vw,31px);background:linear-gradient(90deg,#ffe0ae,#ff9fc5)}.nav-buttons{display:flex;gap:8px}.nav-button{border:1px solid #f4c0d33b;background:#1d1222af;color:#f8e9f1;padding:11px 15px;border-radius:99px;font-size:13px;transition:all .2s;backdrop-filter:blur(12px)}.nav-button:hover{border-color:#ffd2df}.nav-button.next{background:linear-gradient(115deg,#ffe0b1,#ffabc8 55%,#d8bdff);border-color:transparent;color:#291322;min-width:130px;font-weight:600}
+.confetti-bit{position:fixed;top:-20px;z-index:50;pointer-events:none;animation:confetti-fall linear forwards;font-size:18px}
+/* Layout tuning */
+@media(max-width:760px){.topbar{padding:14px 18px}.top-right{font-size:8px}.scene{padding:83px 22px 100px;align-items:center}.hero-grid,.wish-layout,.letter-layout,.cake-layout,.heart-wrap{grid-template-columns:1fr;gap:8px}.hero-grid{grid-template-columns:1fr .82fr;gap:0}.hero-art{height:40vh;min-height:225px;margin-right:-5px}.hero-copy h1{font-size:clamp(49px,10vw,84px)}.hero-copy .copy{font-size:14px;line-height:1.8}.birthday-card{right:6%;top:18%;width:82%;height:68%}.mini-polaroid{bottom:3%;width:46%}.seal{width:58px;bottom:9%;font-size:7px}.s1 .primary{min-width:0;padding:12px 15px;gap:10px;font-size:13px}.s1 .small-note{display:block;margin-top:15px}.wish-layout{grid-template-columns:.58fr 1fr;gap:20px}.wish-emblem{width:min(29vw,190px)}.s2 h2{font-size:clamp(36px,7vw,62px)}.s2 .copy{font-size:14px;line-height:1.8}.memory-grid{gap:8px;margin-top:18px}.memory-card{padding:13px;min-height:150px}.memory-card .icon{font-size:20px;margin:16px 0 7px}.memory-card strong{font-size:15px}.memory-card .revealed{font-size:12px}.letter-layout{grid-template-columns:.55fr 1fr;gap:14px}.envelope-wrap{min-width:140px;width:100%}.letter-layout h2{font-size:clamp(35px,7vw,58px)}.letter-layout .copy{font-size:14px}.starfield-art{width:52vw;right:-11%;top:13%;opacity:.42}.s6 .inner{max-width:520px}.cake-layout{grid-template-columns:.9fr 1.1fr;gap:4px}.cake-stage{height:250px;transform:scale(.88);transform-origin:center}.cake-layout .copy{font-size:14px}.promise-list{gap:7px}.promise{padding:14px 12px;min-height:145px}.promise b{font-size:14px}.promise p{font-size:12px}.heart-wrap{grid-template-columns:.7fr 1fr;gap:12px}.tap-heart{font-size:clamp(90px,20vw,150px)}.heart-side{padding:16px}.heart-side h3{font-size:17px}.heart-count{font-size:34px}.heart-message{font-size:13px}.bottom-bar{padding:12px 16px max(13px,var(--safe-bottom))}.nav-button{padding:10px 13px;font-size:12px}.nav-button.next{min-width:110px}.progress-area{gap:8px}.progress-dots{gap:3px}}
+@media(max-width:430px){.brand{font-size:9px;letter-spacing:.1em}.brand-mark{width:25px;height:25px}.top-right{letter-spacing:.06em}.scene{padding-left:19px;padding-right:19px}.hero-grid{grid-template-columns:1fr;gap:0}.hero-art{position:absolute;width:54%;height:35vh;min-height:190px;right:-4px;top:19%;opacity:.75;z-index:0}.hero-copy{align-self:center;max-width:90%;padding-top:4vh}.hero-copy h1{font-size:clamp(56px,16vw,80px);position:relative;z-index:2}.hero-copy .copy{max-width:88%;position:relative;z-index:2}.hero-copy .actions{position:relative;z-index:3}.s1 .small-note{font-size:8px}.s2 .wish-layout{grid-template-columns:1fr;gap:16px}.wish-emblem{width:100px}.wish-emblem:before{inset:-10%}.wish-emblem:after{inset:-19%}.wish-emblem span{font-size:42px}.s2 .copy{max-width:100%}.s2 h2{font-size:clamp(39px,11vw,54px)}.s3 h2{font-size:40px}.big-quote{font-size:clamp(31px,8.2vw,44px)}.memory-grid{grid-template-columns:1fr;gap:8px}.memory-card{min-height:0;padding:12px 15px;display:grid;grid-template-columns:32px 1fr;column-gap:11px;align-items:center}.memory-card .number{grid-column:1/-1}.memory-card .icon{margin:7px 0;font-size:21px}.memory-card strong{margin:0;font-size:16px}.memory-card .tease{grid-column:2;font-size:12px;color:#dfbdd0}.memory-card .revealed{grid-column:2;font-size:12px}.s4 .copy{font-size:14px;line-height:1.7}.letter-layout{grid-template-columns:1fr;gap:7px}.envelope-wrap{width:115px;min-width:0;margin:0 auto 7px}.envelope-seal{width:32px;height:32px;font-size:16px}.letter-paper{padding:7px}.letter-paper span{font-size:15px}.letter-paper small{margin-top:6px;font-size:6px}.letter-layout h2{font-size:39px;margin:11px 0}.letter-layout .copy{font-size:13px;line-height:1.75}.letter-text{font-size:13px;margin-top:10px}.s5 .actions{margin-top:16px}.s6 h2{font-size:clamp(42px,11vw,58px)}.s6 .copy{font-size:14px}.starfield-art{right:-23%;width:75vw;top:20%;opacity:.32}.cake-layout{grid-template-columns:1fr;gap:2px}.cake-stage{height:145px;transform:scale(.66);margin:-9px 0 -5px}.cake-layout .copy{font-size:14px;line-height:1.75}.cake-layout h2{font-size:43px}.cake-message{font-size:15px;margin-top:10px}.promise-list{grid-template-columns:1fr;gap:7px;margin-top:18px}.promise{min-height:0;padding:10px 13px;display:grid;grid-template-columns:27px 1fr;column-gap:8px}.promise span{grid-row:span 2;font-size:19px}.promise b{font-size:14px;margin:1px 0 3px}.promise p{font-size:12px;line-height:1.6}.s8 h2{font-size:39px}.s8 .copy{font-size:14px;line-height:1.75}.heart-wrap{grid-template-columns:1fr;gap:5px}.tap-heart{font-size:clamp(70px,21vw,110px);display:block;margin:auto}.heart-side{padding:14px}.heart-side h3{margin-bottom:7px}.heart-count{font-size:28px}.heart-message{min-height:0;margin-bottom:0}.s9 h2{font-size:41px}.s9 .copy{font-size:14px}.final-content h2{font-size:clamp(43px,12vw,58px)}.final-content .copy{font-size:14px;line-height:1.8}.final-heart{margin:3px 0 12px;font-size:29px}.final-sign{font-size:21px}.page-count{font-size:9px}.progress-area{gap:6px}.progress-dots{gap:2px}.progress-dot{width:6px}.progress-dot.active{width:14px}.nav-buttons{gap:5px}.nav-button{padding:9px 11px;font-size:11px}.nav-button.next{min-width:90px}.bottom-bar{gap:8px}}
+@media(max-height:670px) and (min-width:431px){.scene{padding-top:74px;padding-bottom:80px}.hero-art{height:54vh;min-height:0}.hero-grid{gap:2vw}.memory-card{min-height:130px}.cake-stage{height:260px}.promise{min-height:120px}.bottom-bar{padding-top:9px;padding-bottom:9px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+@keyframes aurora{0%{transform:translate3d(-2%,1%,0) rotate(-8deg) scale(1)}100%{transform:translate3d(3%,-2%,0) rotate(8deg) scale(1.08)}}@keyframes fade-up{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:none}}@keyframes glow{0%,100%{box-shadow:0 0 34px #ff7eaf24,inset 0 0 25px #ff7eaf10}50%{box-shadow:0 0 65px #ff7eaf46,inset 0 0 35px #ff7eaf22}}@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-13px) rotate(2deg)}}@keyframes card-float{0%,100%{transform:rotate(4deg) translateY(0)}50%{transform:rotate(2deg) translateY(-8px)}}@keyframes dash{to{stroke-dashoffset:-170}}@keyframes twinkle{from{opacity:.4;transform:scale(.85)}to{opacity:1;transform:scale(1.13)}}@keyframes flame{from{transform:translateX(-50%) rotate(-3deg) scale(.94)}to{transform:translateX(-50%) rotate(3deg) scale(1.05)}}@keyframes heart-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}@keyframes confetti-fall{to{transform:translate3d(var(--drift),110vh,0) rotate(700deg);opacity:0}}
+</style>
+</head>
+<body>
+<div id="backdrop" aria-hidden="true">
+  <video id="bgVideo" muted loop playsinline preload="none" aria-hidden="true"></video>
+  <div id="videoShade"></div><canvas id="particleCanvas"></canvas>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- The countdown is a true gate: there are no clickable site controls before midnight. -->
+<section id="countdownGate" aria-label="Birthday countdown">
+ <div class="gate-content">
+  <div class="gate-spark" aria-hidden="true">✦</div>
+  <div class="gate-eyebrow">A LITTLE MIDNIGHT MAGIC · FOR RIJU</div>
+  <h1>কিছু সুন্দর মুহূর্ত<br><em>ঠিক বারোটায়।</em></h1>
+  <p class="gate-copy">রিজুর জন্য ছোট্ট একটা সারপ্রাইজ তৈরি হচ্ছে। ঘড়ির কাঁটা বারো ছোঁয়া পর্যন্ত এই সময়টুকু শুধু অপেক্ষার—তারপর শুরু হবে আসল গল্প।</p>
+  <div class="clock" role="timer" aria-live="off" aria-label="Time until the birthday surprise">
+   <div class="time-cell"><strong id="hh">00</strong><span>HOURS</span></div>
+   <div class="time-cell"><strong id="mm">00</strong><span>MINUTES</span></div>
+   <div class="time-cell"><strong id="ss">00</strong><span>SECONDS</span></div>
+  </div>
+  <div class="gate-foot">MADE WITH <span class="tiny-heart">♥</span> · OPENS AT 12:00 AM</div>
+ </div>
+</section>
+
+<main id="app" aria-label="Riju birthday love film">
+ <header class="topbar"><div class="brand"><span class="brand-mark">♡</span><span>RIJU · THE BIRTHDAY EDITION</span></div><div class="top-right">A LITTLE FILM MADE WITH LOVE</div></header>
+
+ <section class="scene s1" data-scene="0" aria-label="Happy birthday Riju">
+  <div class="inner hero-grid">
+   <div class="hero-copy">
+    <div class="kicker">THE DAY IS YOURS · 01 / 10</div>
+    <h1>Happy<br>Birthday,<br><em>Riju.</em></h1>
+    <p class="copy">আজকের দিনটা একটু বেশি সুন্দর—কারণ আজ তোমার দিন। পৃথিবীর সব কোমল রং, ছোট ছোট আনন্দ আর সবচেয়ে মিষ্টি হাসিগুলো আজ তোমার জন্য থাকুক।</p>
+    <div class="actions"><button class="primary" data-next>সারপ্রাইজটা খুলি <span>↗</span></button><span class="small-note">A NEW MEMORY STARTS HERE</span></div>
+   </div>
+   <div class="hero-art" aria-hidden="true"><div class="halo"></div><div class="orbit"></div><div class="birthday-card"><div class="birthday-card-inner"><div class="card-top">A NOTE FOR SOMEONE SPECIAL · 2026</div><div class="card-script">The world is<br>lovelier with<br><span>you in it.</span></div><div class="card-bottom"><span>WITH LOVE</span><span>♥ RIJU</span></div></div></div><div class="mini-polaroid"><div class="scene-pic"></div><div class="polaroid-cap">for your brightest days ♡</div></div><div class="seal">YOU ARE<br>LOVED<br>✦</div></div>
+  </div>
+ </section>
+
+ <section class="scene s2" data-scene="1" aria-label="A wish for Riju">
+  <div class="inner wish-layout"><div class="wish-emblem" aria-hidden="true"><span>R</span></div><div><div class="kicker">A WISH, JUST FOR YOU · 02 / 10</div><h2>আজ তোমার জন্য<br><em>এক আকাশ শুভকামনা।</em></h2><p class="copy">রিজু, তোমার নতুন বছরটা ভরে উঠুক এমন সব মুহূর্তে—যেগুলো মনে পড়লে একা একাই হাসি পেয়ে যায়। তোমার মনের ইচ্ছেগুলো সাহস পাক, আর ভালো জিনিসগুলো তোমাকে খুঁজে নিক।</p><div class="actions"><button class="primary" data-next>আরও একটা ইচ্ছে <span>↗</span></button></div></div></div>
+ </section>
+
+ <section class="scene s3" data-scene="2" aria-label="Your smile">
+  <div class="inner"><div class="kicker">THE SOFTEST KIND OF MAGIC · 03 / 10</div><div class="big-quote" style="margin-top:25px">“কিছু মানুষের হাসি<br>শুধু মুখে থাকে না—<br><em>চারপাশটাকেও সুন্দর করে দেয়।”</em></div><p class="copy" style="margin-top:25px">তোমার হাসিটা এমনই থাকুক—নির্ভার, আপন, আর একদম নিজের মতো। খারাপ দিন এলেও যেন মনে রাখো, তুমি কতটা আলো নিয়ে এই পৃথিবীতে আছো।</p><div class="actions"><button class="primary" data-next>একটা ছোট্ট কথা <span>↗</span></button></div></div>
+ </section>
+
+ <section class="scene s4" data-scene="3" aria-label="Little things worth celebrating">
+  <div class="inner"><div class="kicker">THE LITTLE THINGS · 04 / 10</div><h2>ছোট ছোট ব্যাপারেই<br><em>লুকিয়ে থাকে জাদু।</em></h2><p class="copy">প্রতিটা কার্ডে একবার ট্যাপ করো—প্রতিটায় একটা ছোট্ট কথা লুকিয়ে আছে।</p>
+   <div class="memory-grid">
+    <button class="memory-card" aria-expanded="false"><span class="number">NOTE / 001</span><span class="icon">☼</span><span class="tease"><strong>তোমার হাসি</strong>একটা ছোট্ট রোদ্দুর ↗</span><span class="revealed">তোমার হাসি যেন কখনো নিজের কাছেই হারিয়ে না যায়। তুমি হাসলে চারপাশটাও একটু হালকা লাগে।</span></button>
+    <button class="memory-card" aria-expanded="false"><span class="number">NOTE / 002</span><span class="icon">♡</span><span class="tease"><strong>তোমার মন</strong>এতটা সুন্দর কেন? ↗</span><span class="revealed">তোমার যত্ন নেওয়ার ভঙ্গিটা, ছোট্ট কথায় মানুষকে ভালো লাগিয়ে দেওয়া—এসবই তোমাকে আলাদা করে।</span></button>
+    <button class="memory-card" aria-expanded="false"><span class="number">NOTE / 003</span><span class="icon">✦</span><span class="tease"><strong>তোমার স্বপ্ন</strong>আরও উঁচুতে উড়ুক ↗</span><span class="revealed">যে স্বপ্নের কথা কাউকে বলোনি, সেগুলোও একদিন সত্যি হোক। তুমি নিজের কল্পনার থেকেও বেশি পারো।</span></button>
+   </div><div class="actions"><button class="primary" data-next>পরের পাতায় যাই <span>↗</span></button></div>
+  </div>
+ </section>
+
+ <section class="scene s5" data-scene="4" aria-label="A letter for Riju">
+  <div class="inner letter-layout"><div class="envelope-wrap"><button class="envelope" id="envelope" aria-label="Open the birthday letter" aria-expanded="false"><div class="letter-paper"><span>একটু মন দিয়ে<br>পড়ো, প্লিজ।</span><small>A SMALL LETTER FOR YOU</small></div><div class="envelope-flap"></div><div class="envelope-seal">♡</div></button></div><div><div class="kicker">UNFOLDED, JUST FOR YOU · 05 / 10</div><h2>একটা চিঠি।<br><em>অনেকগুলো অনুভূতি।</em></h2><p class="copy">এখানে কোনো বড় বড় প্রতিশ্রুতি নেই। শুধু কিছু সহজ কথা, যেগুলো ব্যস্ত দিনের মাঝেও মনে রাখা যায়।</p><div class="letter-text" id="letterText">রিজু, তোমার জীবনে এমন মানুষ থাকুক যারা তোমার হাসির কারণ হবে, মন খারাপের দিনে পাশে বসে থাকবে, আর তোমার স্বপ্নগুলোকে ছোট করে দেখবে না। তুমি যেমন, ঠিক তেমনভাবেই মূল্যবান। তোমার জন্মদিনে এইটুকুই চাই—নিজেকে একটু বেশি ভালোবাসো, নিজের জন্যও একটু সময় রেখো, আর জীবনের সুন্দর জিনিসগুলোকে মন খুলে গ্রহণ করো। শুভ জন্মদিন। ♡</div><div class="actions"><button class="primary" id="openLetterBtn">চিঠিটা খুলি <span>♡</span></button><button class="subtle" data-next>চলো এগোই ↗</button></div></div></div>
+ </section>
+
+ <section class="scene s6" data-scene="5" aria-label="A sky full of wishes">
+  <svg class="starfield-art" viewBox="0 0 400 420" aria-hidden="true"><path class="constellation-line" d="M70 65 L146 38 L194 104 L285 63 L330 142 L252 210 L290 315 L184 370 L108 290 L48 195 Z M70 65 L252 210 L108 290 L194 104 L330 142 M48 195 L184 370 L290 315"/><circle class="constellation-star" cx="70" cy="65" r="5"/><circle class="constellation-star" cx="146" cy="38" r="3"/><circle class="constellation-star" cx="194" cy="104" r="5"/><circle class="constellation-star" cx="285" cy="63" r="4"/><circle class="constellation-star" cx="330" cy="142" r="5"/><circle class="constellation-star" cx="252" cy="210" r="6"/><circle class="constellation-star" cx="290" cy="315" r="4"/><circle class="constellation-star" cx="184" cy="370" r="5"/><circle class="constellation-star" cx="108" cy="290" r="4"/><circle class="constellation-star" cx="48" cy="195" r="5"/></svg>
+  <div class="inner"><div class="kicker">SOMEWHERE IN YOUR UNIVERSE · 06 / 10</div><h2>তোমার স্বপ্নগুলো<br><em>তারাদের মতো জ্বলুক।</em></h2><p class="copy">সব উত্তর আজই পেতে হবে না। সব পথও আগে থেকে জানা লাগে না। শুধু নিজের ওপর বিশ্বাস রেখো—ধীরে ধীরে, নিজের ছন্দে, তুমি তোমার আকাশ খুঁজে নেবে।</p><p class="copy" style="color:#f4c3d8">আজকের রাতের একটা ইচ্ছে মনে মনে চেয়ে নাও। ✦</p><div class="actions"><button class="primary" id="wishBtn">ইচ্ছেটা রেখে দিলাম <span>✦</span></button><button class="subtle" data-next>ইচ্ছেটা সঙ্গে নিয়ে যাই ↗</button></div><p id="wishMessage" class="copy" style="display:none;margin-top:14px;color:#ffdfb1">এই ইচ্ছেটা তোমার। সময় হলে সুন্দরভাবেই তার কাছে পৌঁছাবে। ♡</p></div>
+ </section>
+
+ <section class="scene s7" data-scene="6" aria-label="Birthday cake">
+  <div class="inner cake-layout"><div><div class="kicker">MAKE A LITTLE WISH · 07 / 10</div><h2>এবার কেক কাটার<br><em>পালা, রিজু!</em></h2><p class="copy">একটা ইচ্ছে মনে মনে চাও, তারপর নিচের বোতামে ট্যাপ করে মোমবাতিগুলো নিভিয়ে দাও। এই মুহূর্তটা তোমার।</p><button class="primary" id="blowBtn">মোমবাতি নিভিয়ে দাও <span>✧</span></button><p class="cake-message" id="cakeMessage">ইয়েই! 🎂 তোমার সব ভালো ইচ্ছে পূরণ হোক। আজ, আগামীকাল—আর তারও পরে।</p></div><div class="cake-stage"><div class="cake-plate"></div><div class="cake" id="cake"><div class="candle-row"><span class="candle"><i class="flame"></i></span><span class="candle"><i class="flame"></i></span><span class="candle"><i class="flame"></i></span></div></div></div></div>
+ </section>
+
+ <section class="scene s8" data-scene="7" aria-label="Three birthday promises">
+  <div class="inner"><div class="kicker">THREE THINGS YOU DESERVE · 08 / 10</div><h2>এই তিনটা জিনিস<br><em>তোমার প্রাপ্য।</em></h2><p class="copy">শুধু জন্মদিনে নয়, বছরের প্রতিটা দিনেই।</p><div class="promise-list"><div class="promise"><span>☼</span><b>শান্তি</b><p>যে শান্তিতে মনটা হালকা হয়, আর নিঃশ্বাস নিতে ভালো লাগে।</p></div><div class="promise"><span>♡</span><b>সত্যিকারের যত্ন</b><p>যেখানে তোমাকে কিছু প্রমাণ করতে হয় না—তুমি এমনিতেই যথেষ্ট।</p></div><div class="promise"><span>✦</span><b>নিজের মতো সুখ</b><p>তোমার ছোট ছোট আনন্দ, বড় স্বপ্ন, আর নিজের জন্য বেছে নেওয়া সুন্দর দিন।</p></div></div><div class="actions"><button class="primary" data-next>দুটো পাতা বাকি <span>↗</span></button></div></div>
+ </section>
+
+ <section class="scene s9" data-scene="8" aria-label="Tap for a little love">
+  <div class="inner heart-wrap"><div><div class="kicker">A LITTLE EXTRA LOVE · 09 / 10</div><h2>একটু ভালোবাসা<br><em>জমিয়ে রাখি?</em></h2><p class="copy">হৃদয়টায় যতবার খুশি ট্যাপ করো। প্রতিটা ট্যাপে তোমার জন্য একটা করে ভালো কথা জমা হবে।</p><p class="small-note">NO LIMIT ON THE GOOD THINGS</p></div><div class="heart-side"><button id="tapHeart" class="tap-heart" aria-label="Tap to collect a loving message">♥</button><div class="heart-count"><span id="loveCount">00</span> <span style="font-size:18px">little loves</span></div><p id="heartMessage" class="heart-message">একটা ট্যাপ দিয়ে শুরু করি। ♡</p></div></div>
+ </section>
+
+ <section class="scene s10" data-scene="9" aria-label="Final birthday message">
+  <span class="final-star fs1" aria-hidden="true">✦</span><span class="final-star fs2" aria-hidden="true">✧</span><span class="final-star fs3" aria-hidden="true">✦</span><span class="final-star fs4" aria-hidden="true">✧</span>
+  <div class="inner final-content"><div class="kicker" style="justify-content:center">THE END OF THIS LITTLE FILM · 10 / 10</div><h2 style="margin-top:25px">শুভ জন্মদিন,<br><em>আমাদের প্রিয় রিজু।</em></h2><span class="final-heart">♥</span><p class="copy">তোমার নতুন বছরটা হোক কোমল, সাহসী আর সুন্দর। তুমি যেন এমন ভালোবাসা পাও, যেখানে তোমার কথা মন দিয়ে শোনা হয়, তোমার হাসিকে যত্নে রাখা হয়, আর তোমার পাশে থাকার ইচ্ছেটা প্রতিদিন নতুন করে বেছে নেওয়া হয়।</p><p class="final-sign">May your heart always find its way to joy. ♡</p><div class="actions" style="justify-content:center"><button class="primary" id="restartBtn">গল্পটা আবার দেখি <span>↺</span></button></div><p class="small-note" style="margin-top:24px">CREATED WITH CARE · FOR RIJU, ON HER DAY</p><p class="small-note" style="margin-top:10px;font-size:8px;letter-spacing:.04em">BACKGROUND VIDEO: <a href="https://freestockfootagearchive.com/glitch-love-hearts-background/" target="_blank" rel="noopener" style="color:#dabbd0">Free Stock Footage Archive · CC BY 4.0</a></p></div>
+ </section>
+
+ <footer class="bottom-bar" aria-label="Scene navigation"><div class="progress-area"><span class="page-count" id="pageCount">01 / 10</span><div class="progress-dots" id="progressDots" aria-label="Scene progress"></div></div><div class="nav-buttons"><button class="nav-button" id="prevBtn" aria-label="Previous scene">← Back</button><button class="nav-button next" id="nextBtn">Next scene ↗</button></div></footer>
+</main>
+<script>
+/* ===================== PERSONALIZE HERE ===================== */
+const CONFIG = {
+  name: "Riju",
+  /* Leave blank for the next local midnight. For a fixed birthday, use YYYY-MM-DD, e.g. "2026-10-23". */
+  birthdayDate: "2026-10-23",
+  /* Optional: add a licensed MP4 at assets/romantic-background.mp4 and use that path here. */
+  backgroundVideoUrl: "https://freestockfootagearchive.com/wp-content/uploads/2019/04/Glitchy_Love_Hearts_Background_loop.mp4"
+};
+/* ============================================================ */
+
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+const gate = $('#countdownGate');
+const app = $('#app');
+const scenes = $$('.scene');
+let activeIndex = 0;
+let timerInterval = null;
+let revealed = false;
+let targetMidnight = getTargetMidnight();
+
+function getTargetMidnight(){
+  if(CONFIG.birthdayDate && /^\d{4}-\d{2}-\d{2}$/.test(CONFIG.birthdayDate)){
+    const d = new Date(CONFIG.birthdayDate + 'T00:00:00');
+    if(!Number.isNaN(d.getTime())) return d;
+  }
+  // Keep the chosen target in this browser tab's session so a refresh at 12:01
+  // doesn't restart the countdown for the following night.
+  try {
+    const saved = sessionStorage.getItem('riju-birthday-target');
+    if(saved){ const d = new Date(saved); if(!Number.isNaN(d.getTime())) return d; }
+    const d = new Date(); d.setHours(24,0,0,0);
+    sessionStorage.setItem('riju-birthday-target', d.toISOString());
+    return d;
+  } catch(e) { const d = new Date(); d.setHours(24,0,0,0); return d; }
+}
+function pad(n){return String(Math.max(0,n)).padStart(2,'0')}
+function revealSite(){
+  if(revealed) return;
+  revealed = true;
+  if(timerInterval) clearInterval(timerInterval);
+  gate.classList.add('gone'); app.classList.add('unlocked'); showScene(0, false); burstConfetti(90);
+}
+function updateCountdown(){
+  if(revealed) return;
+  const remaining = targetMidnight.getTime() - Date.now();
+  if(remaining <= 0){
+    $('#hh').textContent='00'; $('#mm').textContent='00'; $('#ss').textContent='00';
+    revealSite();
+    return;
+  }
+  const total = Math.floor(remaining/1000);
+  $('#hh').textContent=pad(Math.floor(total/3600));
+  $('#mm').textContent=pad(Math.floor((total%3600)/60));
+  $('#ss').textContent=pad(total%60);
+}
+
+// Optional real video layer; the animated canvas remains the fallback.
+if(CONFIG.backgroundVideoUrl){
+  const video=$('#bgVideo'); video.src=CONFIG.backgroundVideoUrl; video.load();
+  video.addEventListener('canplay',()=>video.classList.add('ready'),{once:true});
+  video.play().catch(()=>{});
+}
+
+const dotsHost=$('#progressDots');
+scenes.forEach((_,i)=>{const b=document.createElement('button');b.className='progress-dot';b.type='button';b.setAttribute('aria-label',`Go to scene ${i+1}`);b.addEventListener('click',()=>showScene(i));dotsHost.appendChild(b)});
+function showScene(index, animate=true){
+  activeIndex=(index+scenes.length)%scenes.length;
+  scenes.forEach((scene,i)=>{scene.classList.toggle('active',i===activeIndex);scene.classList.remove('leaving');scene.setAttribute('aria-hidden',i===activeIndex?'false':'true')});
+  $$('.progress-dot').forEach((dot,i)=>{dot.classList.toggle('active',i===activeIndex);dot.setAttribute('aria-current',i===activeIndex?'step':'false')});
+  $('#pageCount').textContent=`${pad(activeIndex+1)} / ${pad(scenes.length)}`;
+  $('#prevBtn').disabled=activeIndex===0;$('#nextBtn').textContent=activeIndex===scenes.length-1?'Again ↺':'Next scene ↗';
+  if(animate) burstConfetti(activeIndex===9?60:12);
+}
+function nextScene(){if(activeIndex===scenes.length-1){showScene(0);return}showScene(activeIndex+1)}
+$('#nextBtn').addEventListener('click',nextScene);$('#prevBtn').addEventListener('click',()=>showScene(Math.max(0,activeIndex-1)));$$('[data-next]').forEach(b=>b.addEventListener('click',nextScene));$('#restartBtn').addEventListener('click',()=>showScene(0));
+
+// Tappable mini-memories.
+$$('.memory-card').forEach(card=>card.addEventListener('click',()=>{const open=card.classList.toggle('open');card.setAttribute('aria-expanded',String(open));if(open)burstConfetti(8)}));
+// Letter reveal.
+function openLetter(){const e=$('#envelope');e.classList.add('open');e.setAttribute('aria-expanded','true');$('#letterText').classList.add('show');$('#openLetterBtn').innerHTML='চিঠিটা খুলে গেছে <span>♥</span>';$('#openLetterBtn').disabled=true;burstConfetti(18)}
+$('#envelope').addEventListener('click',openLetter);$('#openLetterBtn').addEventListener('click',openLetter);
+// Make-a-wish interaction.
+$('#wishBtn').addEventListener('click',()=>{$('#wishMessage').style.display='block';$('#wishBtn').innerHTML='ইচ্ছেটা রাখা হলো <span>♡</span>';$('#wishBtn').disabled=true;burstConfetti(28)});
+// Candle-blowing moment.
+$('#blowBtn').addEventListener('click',()=>{const cake=$('#cake');cake.classList.add('candles-out');$('#cakeMessage').classList.add('show');$('#blowBtn').innerHTML='Wish sent ✨';$('#blowBtn').disabled=true;burstConfetti(65)});
+// A gentle message on each heart tap.
+const loveNotes=['তুমি যেমন, ঠিক তেমনভাবেই যথেষ্ট। ♡','তোমার হাসিটা যত্নে রেখো।','তোমার স্বপ্নগুলো গুরুত্বপূর্ণ। ✦','মন খারাপ হলে নিজেকে একটু সময় দিও।','তুমি ভালোবাসা আর সম্মান পাওয়ার যোগ্য।','নিজের জন্যও ছোট্ট ছোট্ট আনন্দ বেছে নিও। ☼','তোমার ভেতরের আলোটা কখনো ছোট করে দেখো না।','আজকের দিনটা তোমার—মন খুলে উপভোগ করো।','পৃথিবীতে তোমার মতো আর কেউ নেই। ♡','তোমার সামনে আরও অনেক সুন্দর দিন অপেক্ষা করছে।'];
+let loveCount=0;$('#tapHeart').addEventListener('click',()=>{loveCount++;$('#loveCount').textContent=pad(loveCount);$('#heartMessage').textContent=loveNotes[(loveCount-1)%loveNotes.length];$('#tapHeart').animate([{transform:'scale(1)'},{transform:'scale(1.28)'},{transform:'scale(1)'}],{duration:370,easing:'ease-out'});burstConfetti(5)});
+
+function burstConfetti(count=24){
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduced)return;
+ const symbols=['♥','✦','✧','♡','·'];
+ for(let i=0;i<count;i++){
+  const bit=document.createElement('span');bit.className='confetti-bit';bit.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  bit.style.left=(Math.random()*100)+'vw';bit.style.color=['#ffabc9','#ffe2b3','#d7bcff','#fff0f4'][Math.floor(Math.random()*4)];
+  bit.style.fontSize=(10+Math.random()*16)+'px';bit.style.animationDuration=(3+Math.random()*4)+'s';bit.style.animationDelay=(Math.random()*.9)+'s';bit.style.setProperty('--drift',((Math.random()-.5)*240)+'px');document.body.appendChild(bit);setTimeout(()=>bit.remove(),8500);
+ }
+}
+
+// Living, low-cost cinematic stars/hearts; respects reduced-motion preferences.
+(function particles(){
+ const canvas=$('#particleCanvas'),ctx=canvas.getContext('2d');if(!ctx)return;
+ let w=0,h=0,ratio=1,particles=[];const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function resize(){ratio=Math.min(window.devicePixelRatio||1,1.7);w=window.innerWidth;h=window.innerHeight;canvas.width=Math.floor(w*ratio);canvas.height=Math.floor(h*ratio);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(ratio,0,0,ratio,0,0);const n=Math.min(90,Math.max(28,Math.floor(w*h/15500)));particles=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:.5+Math.random()*1.9,a:.16+Math.random()*.64,phase:Math.random()*Math.PI*2,speed:.08+Math.random()*.32,drift:(Math.random()-.5)*.12,heart:Math.random()<.12}));}
+ function draw(t){ctx.clearRect(0,0,w,h);for(const p of particles){const pulse=.65+.35*Math.sin(t*.0007*p.speed+p.phase);ctx.globalAlpha=p.a*pulse;ctx.fillStyle=p.heart?'#ffbad6':'#ffe6c9';if(p.heart){ctx.font=`${8+p.r*4}px Georgia`;ctx.fillText('♡',p.x,p.y)}else{ctx.beginPath();ctx.arc(p.x,p.y,p.r*pulse,0,Math.PI*2);ctx.fill()}if(!reduced){p.y-=p.speed*.18;p.x+=p.drift;if(p.y<-15){p.y=h+10;p.x=Math.random()*w}if(p.x<-10)p.x=w+10;if(p.x>w+10)p.x=-10}}
+ ctx.globalAlpha=1;if(!reduced)requestAnimationFrame(draw);}
+ resize();window.addEventListener('resize',resize,{passive:true});requestAnimationFrame(draw);
+})();
+
+updateCountdown();if(!revealed) timerInterval=setInterval(updateCountdown,250);
+// If the date configured in CONFIG is already past, the countdown is complete at load.
+</script>
+</body>
+</html>
